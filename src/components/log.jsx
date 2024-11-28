@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Log() {
     const [details, setDetails] = useState({memberId:'', memberName:'', memberType:''});
     const [loading, setLoading] = useState(false);
+
+    const notifyError = () => toast("Try Again!");
+    const notifySuccess = () => toast("Logged Successfully.");
 
     const handleChange = (event) => {
         const updatedDetails = { ...details, [event.target.name] : event.target.value};
@@ -25,18 +30,21 @@ export default function Log() {
       
             const responseData = await response.text();
             console.log('Response from server:', responseData);
+            notifySuccess();
       
             // Reset the form
             setDetails({ memberId: '', memberName: '', memberType: '' });
           } catch (error) {
             console.error('Error sending POST request:', error);
+            notifyError();
           } finally {
             setLoading(false);
           }
     }
 
     return (
-        <div className="p-4">
+        <div className="p-4 w-full">
+            <ToastContainer/>
             <h2 className="font-bold text-4xl text-[#2cb957] text-center">Log Clearing Member</h2>
             
             <div className="mt-10 ml-6">
